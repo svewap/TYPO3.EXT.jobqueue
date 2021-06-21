@@ -55,7 +55,8 @@
         },
         "typo3/cms": {
             "cms-package-dir": "{$vendor-dir}/typo3/cms",
-            "web-dir": ".Build/web"
+            "web-dir": ".Build/web",
+            "extension-key": "jobqueue"
         }
     },
     "suggest": {
