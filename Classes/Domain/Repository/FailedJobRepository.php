@@ -14,10 +14,12 @@ namespace R3H6\Jobqueue\Domain\Repository;
  * Public License for more details.                                       *
  *                                                                        */
 
+use TYPO3\CMS\Extbase\Persistence\Repository;
+
 /**
  * The repository for FailedJobs
  */
-class FailedJobRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class FailedJobRepository extends Repository
 {
 
 }

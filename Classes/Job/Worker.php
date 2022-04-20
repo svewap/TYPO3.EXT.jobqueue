@@ -15,8 +15,6 @@ namespace R3H6\Jobqueue\Job;
  * Public License for more details.                                       *
  *                                                                        */
 
-use R3H6\Jobqueue\Queue\Message;
-use R3H6\Jobqueue\Queue\QueueInterface;
 use R3H6\Jobqueue\Registry;
 
 /**

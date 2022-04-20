@@ -15,15 +15,11 @@ namespace R3H6\Jobqueue\Job;
  * Public License for more details.                                       *
  *                                                                        */
 
-use TYPO3\CMS\Core\SingletonInterface;
+use R3H6\Jobqueue\Domain\Model\FailedJob;
 use R3H6\Jobqueue\Exception as JobQueueException;
 use R3H6\Jobqueue\Queue\Message;
-use R3H6\Jobqueue\Queue\QueueManager;
-use R3H6\Jobqueue\Job\JobInterface;
-use R3H6\Jobqueue\Domain\Model\FailedJob;
-use R3H6\Jobqueue\Command\JobCommandController;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 
 /**
  * Job manager.
@@ -31,31 +27,31 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 class JobManager implements SingletonInterface
 {
     /**
-     * @var R3H6\Jobqueue\Queue\QueueManager
+     * @var \R3H6\Jobqueue\Queue\QueueManager
      * @inject
      */
     protected $queueManager = null;
 
     /**
-     * @var R3H6\Jobqueue\Domain\Repository\FailedJobRepository
+     * @var \R3H6\Jobqueue\Domain\Repository\FailedJobRepository
      * @inject
      */
     protected $failedJobRepository = null;
 
     /**
-     * @var R3H6\Jobqueue\Configuration\ExtensionConfiguration
+     * @var \R3H6\Jobqueue\Configuration\ExtensionConfiguration
      * @inject
      */
     protected $extensionConfiguration = null;
 
     /**
-     * @var R3H6\Jobqueue\Job\Worker
+     * @var \R3H6\Jobqueue\Job\Worker
      * @inject
      */
     protected $worker = null;
 
     /**
-     * @var TYPO3\CMS\Extbase\SignalSlot\Dispatcher
+     * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
      * @inject
      */
     protected $signalSlotDispatcher = null;

@@ -1,0 +1,9 @@
+services:
+
+  #Vendor\Extension\Command\DoThingsCommand:
+  #  tags:
+  #    - name: 'console.command'
+  #      command: 'jobqueue:dothings'
+  #      description: 'An example description for a command'
+  #      # not required, defaults to false
+  #      hidden: false

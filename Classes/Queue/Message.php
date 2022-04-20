@@ -21,13 +21,13 @@ namespace R3H6\Jobqueue\Queue;
 class Message
 {
     // Created locally, not published to queue
-    const STATE_NEW = 0;
+    public const STATE_NEW = 0;
     // Message published to queue, should not be processed by client
-    const STATE_PUBLISHED = 1;
+    public const STATE_PUBLISHED = 1;
     // Message received from queue, not deleted from queue! (a.k.a. Reserved)
-    const STATE_RESERVED = 2;
+    public const STATE_RESERVED = 2;
     // Message processed and deleted from queue
-    const STATE_DONE = 3;
+    public const STATE_DONE = 3;
 
     /**
      * Depending on the queue implementation, this identifier will

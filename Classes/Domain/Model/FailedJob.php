@@ -14,10 +14,12 @@ namespace R3H6\Jobqueue\Domain\Model;
  * Public License for more details.                                       *
  *                                                                        */
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+
 /**
  * FailedJob
  */
-class FailedJob extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class FailedJob extends AbstractEntity
 {
 
     /**

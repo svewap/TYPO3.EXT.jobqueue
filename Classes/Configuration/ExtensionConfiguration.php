@@ -28,7 +28,7 @@ class ExtensionConfiguration implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * @var array
      */
-    protected $configuration = array();
+    protected $configuration = [];
 
     public function __construct()
     {

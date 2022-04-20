@@ -15,26 +15,24 @@ namespace R3H6\Jobqueue\Command;
  * Public License for more details.                                       *
  *                                                                        */
 
-use R3H6\Jobqueue\Job\JobInterface;
 use R3H6\Jobqueue\Job\Worker;
 use R3H6\Jobqueue\Registry;
-use TYPO3\CMS\Extbase\Mvc\Controller\CommandController;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Job command controller.
  */
-class JobCommandController extends CommandController
+class JobCommand extends Command
 {
     /**
      * @var \R3H6\Jobqueue\Job\JobManager
-     * @inject
      */
     protected $jobManager = null;
 
     /**
      * @var \R3H6\Jobqueue\Registry
-     * @inject
      */
     protected $registry = null;
 
@@ -44,17 +42,38 @@ class JobCommandController extends CommandController
      */
     protected $failedJobRepository = null;
 
+
+
+    /**
+     * Configure the command by defining the name, options and arguments
+     */
+    protected function configure()
+    {
+        $this->setDescription('Run content importer. Without arguments all available wizards will be run.')
+            ->addArgument(
+                'wizardName',
+                InputArgument::OPTIONAL,
+                'Here is a description for your argument'
+            )
+            ->addOption(
+                'brute-force',
+                'b',
+                InputOption::VALUE_OPTIONAL,
+                'Some optional option for your wizard(s). You can use --brute-force or -b when running command'
+            );
+    }
+
+
     /**
      * Tries to (re)start a worker in a new process (EXPERIMENTAL!).
      *
-     * @param  string  $id        daemon id [alphanumeric]
-     * @param  string  $queueName the name of the queue to work on
-     * @param  integer $timeout   time a queue waits for a job in seconds
+     * @param string $id daemon id [alphanumeric]
+     * @param string $queueName the name of the queue to work on
+     * @param integer $timeout time a queue waits for a job in seconds
      * @experimental
      */
     public function daemonCommand($id, $queueName, $timeout = 1)
     {
-        $this->outputLine('<bg=yellow;options=bold>THIS IS AN EXPERIMENTAL FEATURE!</>');
 
         // Check if daemon is already running.
         $status = $this->registry->get('daemon:' . $id);
@@ -69,7 +88,7 @@ class JobCommandController extends CommandController
         $cliDispatchPath = PATH_site . 'typo3/cli_dispatch.phpsh';
 
         // Test if a process can be started and the system gets the right pid.
-        $command = 'exec php ' . $cliDispatchPath .' extbase job:sleep --id="' . $id . '"';
+        $command = 'exec php ' . $cliDispatchPath . ' extbase job:sleep --id="' . $id . '"';
         $test = $this->processOpen($command);
         if ($test['pid'] == getmypid()) {
             throw new \Exception("Method getmypid fails", 1458897118);
@@ -88,10 +107,10 @@ class JobCommandController extends CommandController
         // Open daemon process
         $command = 'exec php ' . $cliDispatchPath . ' extbase job:work --queue-name="' . $queueName . '" --timeout="' . $timeout . '" --limit="' . Worker::LIMIT_INFINITE . '"';
         if ($sleep !== null) {
-            $command .= ' --sleep="' . $sleep. '"';
+            $command .= ' --sleep="' . $sleep . '"';
         }
         if ($memoryLimit !== null) {
-            $command .= ' --memory-limit="' . $memoryLimit. '"';
+            $command .= ' --memory-limit="' . $memoryLimit . '"';
         }
         $status = $this->processOpen($command);
         $this->registry->set('daemon:' . $id, $status);
@@ -100,7 +119,7 @@ class JobCommandController extends CommandController
 
     /**
      * Opens a new process for a given command.
-     * @param  string $command to open
+     * @param string $command to open
      * @return array           process status
      * @throws \RuntimeException
      * @experimental
@@ -124,7 +143,7 @@ class JobCommandController extends CommandController
     /**
      * Checks if a process for given pid exists.
      *
-     * @param  string $pid process id
+     * @param string $pid process id
      * @return boolean
      * @experimental
      */
@@ -163,16 +182,16 @@ class JobCommandController extends CommandController
     /**
      * Work on a queue and execute jobs.
      *
-     * @param  string  $queueName the name of the queue to work on
-     * @param  integer $timeout   time a queue waits for a job in seconds
-     * @param  integer $limit     number of jobs to be done, -1 for all jobs in queue, 0 for work infinite
-     * @see JobCommandController::ARG_ALL_QUEUES
+     * @param string $queueName the name of the queue to work on
+     * @param integer $timeout time a queue waits for a job in seconds
+     * @param integer $limit number of jobs to be done, -1 for all jobs in queue, 0 for work infinite
+     * @see JobCommand::ARG_ALL_QUEUES
      * @todo Exception handling
      */
     public function workCommand($queueName, $timeout = 0, $limit = Worker::LIMIT_QUEUE)
     {
         $this->outputLine('work...');
-        /** @var R3H6\Jobqueue\Job\Worker $worker */
+        /** @var \R3H6\Jobqueue\Job\Worker $worker */
         $worker = $this->objectManager->get(Worker::class);
         $worker->work($queueName, $timeout, $limit);
     }
@@ -181,7 +200,7 @@ class JobCommandController extends CommandController
      * List jobs in a queue.
      *
      * @param string $queueName The name of the queue to work on
-     * @param int    $limit     Number of jobs to list
+     * @param int $limit Number of jobs to list
      * @cli
      */
     public function listCommand($queueName, $limit = 1)
@@ -217,7 +236,7 @@ class JobCommandController extends CommandController
 
         if (is_array($options) && !empty($options)) {
             foreach ($options as $key => $value) {
-                $this->outputFormatted('<b>%s:</b> %s', [ucfirst($key), ($value === null) ? 'null': $value]);
+                $this->outputFormatted('<b>%s:</b> %s', [ucfirst($key), ($value === null) ? 'null' : $value]);
             }
         }
     }
@@ -225,7 +244,7 @@ class JobCommandController extends CommandController
     /**
      * List failed jobs.
      *
-     * @param  string $queueName only list failures for this queue
+     * @param string $queueName only list failures for this queue
      * @cli
      */
     public function failuresCommand($queueName = null)

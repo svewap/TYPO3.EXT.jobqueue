@@ -20,7 +20,6 @@ namespace R3H6\Jobqueue;
  *
  * API for the sys_registry. This registry doesn't cache the values as the core does.
  *
- * @see TYPO3\CMS\Core\Registry
  */
 class Registry implements \TYPO3\CMS\Core\SingletonInterface
 {
@@ -55,7 +54,7 @@ class Registry implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Delete key.
      *
-     * @param  string $key
+     * @param string $key
      */
     public function delete($key)
     {
@@ -65,8 +64,8 @@ class Registry implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Get value by key.
      *
-     * @param  string $key
-     * @param  mixed  $defaultValue
+     * @param string $key
+     * @param mixed $defaultValue
      * @return mixed
      */
     public function get($key, $defaultValue = null)
@@ -81,7 +80,7 @@ class Registry implements \TYPO3\CMS\Core\SingletonInterface
     /**
      * Returns where clause for statement.
      *
-     * @param  string $key
+     * @param string $key
      * @return string
      */
     protected function getWhere($key)
@@ -89,11 +88,5 @@ class Registry implements \TYPO3\CMS\Core\SingletonInterface
         return 'entry_namespace = ' . $this->getDatabasConnection()->fullQuoteStr(static::$namespace, static::$table) . ' AND entry_key = ' . $this->getDatabasConnection()->fullQuoteStr($key, static::$table);
     }
 
-    /**
-     * @return TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabasConnection()
-    {
-        return $GLOBALS['TYPO3_DB'];
-    }
+
 }

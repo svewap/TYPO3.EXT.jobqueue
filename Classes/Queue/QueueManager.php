@@ -15,9 +15,9 @@ namespace R3H6\Jobqueue\Queue;
  * Public License for more details.                                       *
  *                                                                        */
 
-use TYPO3\CMS\Core\SingletonInterface;
 use R3H6\Jobqueue\Exception as JobQueueException;
 use R3H6\Jobqueue\Utility\ClassNamingUtility;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
